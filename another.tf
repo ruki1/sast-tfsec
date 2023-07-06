@@ -1,10 +1,10 @@
 provider "aws" {
-  region = "us-west-1"
+  region = "us-east-1"
 }
 
 resource "aws_instance" "web" {
   instance_type = "t2.micro"
-  ami = data.aws_ami.amzlinux2.id
+  ami = data.aws_ami.RHEL.id
 
 }
 
@@ -13,7 +13,7 @@ resource "aws_vpc" "demo_vpc" {
 }
 
 resource "aws_autoscaling_group" "my_asg" {
-  availability_zones        = ["us-west-1a"]
+  availability_zones        = ["us-east-1a"]
   name                      = "my_asg"
   max_size                  = 5
   min_size                  = 1
@@ -26,17 +26,17 @@ resource "aws_autoscaling_group" "my_asg" {
 
 resource "aws_launch_configuration" "my_web_config" {
   name = "my_web_config"
-  image_id = data.aws_ami.amzlinux2.id
+  image_id = ami = data.aws_ami.RHEL.id
   instance_type = "t2.micro"
 
 }
 
-data "aws_ami" "amzlinux2" {
+data "aws_ami" "RHEL" {
   most_recent = true
   owners      = ["amazon"]
   filter {
     name   = "name"
-    values = ["amzn2-ami-hvm-*-gp2"]
+    values = ["RHEL-9.2.0_HVM-*-41-Hourly2-GP2"]
   }
   filter {
     name   = "root-device-type"
